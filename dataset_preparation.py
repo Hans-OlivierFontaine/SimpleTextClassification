@@ -1,14 +1,12 @@
 from pathlib import Path
-import random
 import re
 
-def discover_folders_and_files(base_path):
+def discover_folders_and_files(base_path: Path):
     """Discover folders (labels) and their corresponding text files."""
-    base_path = Path(base_path)
     data = {label.name: list(label.glob("*.txt")) for label in base_path.iterdir() if label.is_dir()}
     return data
 
-def read_text_file(file_path):
+def read_text_file(file_path: Path):
     """Read the content of a text file."""
     with file_path.open('r', encoding='utf-8') as file:
         return file.read()

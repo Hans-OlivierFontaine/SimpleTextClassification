@@ -4,6 +4,7 @@ from data_processing import discover_folders_and_files, preprocess_text, read_te
 from model import model_factory
 from training import create_dataloader, fine_tune_model
 from metrics import evaluate_model
+from setup import setup_dataset
 
 def main():
     parser = argparse.ArgumentParser(description="Text Classification with Transformers")
@@ -12,8 +13,14 @@ def main():
     parser.add_argument("--batch_size", type=int, default=16, help="Batch size for training")
     parser.add_argument("--epochs", type=int, default=3, help="Number of training epochs")
     parser.add_argument("--learning_rate", type=float, default=5e-5, help="Learning rate")
+    parser.add_argument("--setup", action='store_true', help="Download and setup dataset")
     
     args = parser.parse_args()
+    
+    if args.setup:
+        setup_dataset(args.data_path)
+        return
+    
     model, tokenizer = model_factory(args.model_name)
     data = discover_folders_and_files(args.data_path)
     texts, labels = [], []
@@ -28,4 +35,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
